@@ -1,7 +1,37 @@
-const App = () => (
-  <div>
+import useSWR from 'swr';
+import { listFetcher } from './fetchers';
+import { useEffect, useState } from 'react';
 
-  </div>
-);
+const App = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  const {
+    data: followingList,
+    error: followingError,
+    isLoading: followingIsLoading
+  } = useSWR(isMounted ? '/following_list' : null, listFetcher)
+  const {
+    data: forYouList,
+    error: forYouError,
+    isLoading: forYouIsLoading
+  } = useSWR(isMounted ? '/for_you_list' : null, listFetcher)
+
+  useEffect(() => {
+    setIsMounted(true);
+  });
+
+  useEffect(() => {
+    console.log({ followingList });
+  }, [followingList]);
+
+  useEffect(() => {
+    console.log({ forYouList });
+  }, [forYouList]);
+
+  return (
+    <div>
+
+    </div>
+  );
+}
 
 export default App;
