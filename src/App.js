@@ -29,7 +29,9 @@ const App = () => {
 
   return (
     <div>
-
+      {forYouList?.items?.length > 0
+        ? <img src={followingList.items[0].cover} alt="logo" />
+        : null}
     </div>
   );
 }
