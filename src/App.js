@@ -1,9 +1,10 @@
 import useSWR from 'swr';
 import { listFetcher } from './fetchers';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const App = () => {
   const [isMounted, setIsMounted] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const {
     data: followingList,
     error: followingError,
@@ -14,6 +15,7 @@ const App = () => {
     error: forYouError,
     isLoading: forYouIsLoading
   } = useSWR(isMounted ? '/for_you_list' : null, listFetcher)
+  const videoRef = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -30,7 +32,18 @@ const App = () => {
   return (
     <div>
       {forYouList?.length > 0
-        ? <img src={followingList[0].cover} alt="logo" />
+        ?
+        <div
+          className="flex-2 flex justify-center items-center h-[100vh]">
+          <div className="h-[60vh]">
+            <video
+              ref={videoRef}
+              src={forYouList[0].playUrl}
+              poster={forYouList[0].cover}
+              controls
+            />
+          </div>
+        </div>
         : null}
     </div>
   );
